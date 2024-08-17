@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LibrayDAO {
@@ -67,16 +68,19 @@ public class LibrayDAO {
 
         return session.createQuery(cq).getResultList();
     }
-    public List<Object[]> getAllBooksAndAuthors() {
-        Session session = sessionFactory.openSession();
-        CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<Object[]> cq = cb.createQuery(Object[].class);
-        Root<Book> bookRoot = cq.from(Book.class);
-        Join<Book, Author> authorJoin = bookRoot.join("author");
+    public String getAllBooksAndAuthors() {
+        List<Author> authorsList = getAllAuthors();
+        List<Book> booksList = getAllBooks();
+        List<String> authorsNames = new ArrayList<>();
+        List<String> booksNames = new ArrayList<>();
+        for (Author author : authorsList) {
+            authorsNames.add(author.getName());
+        }
+        for (Book books : booksList) {
+            booksNames.add(books.getTitle());
+        }
 
-        cq.multiselect(bookRoot.get("title"), authorJoin.get("name"));
-
-        return session.createQuery(cq).getResultList();
+        return authorsNames.toString() + "\n" + booksNames.toString();
     }
     public void addAuthor(Author author) {
         Session session = sessionFactory.openSession();

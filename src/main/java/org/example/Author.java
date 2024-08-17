@@ -15,7 +15,7 @@ public class Author {
     private String name;
     private int age;
     private String favouriteGenre;
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Book> books;
 
     public Author() {
@@ -58,6 +58,10 @@ public class Author {
 
     public void setBooks(List<Book> books) {
         this.books = books;
+    }
+
+    public long getId() {
+        return id;
     }
 
     @Override

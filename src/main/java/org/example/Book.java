@@ -4,6 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Objects;
 
@@ -18,6 +21,7 @@ public class Book {
     private String genre;
     private int numberOfPages;
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Author author;
 
     public Book() {
@@ -69,7 +73,6 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", genre='" + genre + '\'' +
                 ", numberOfPages=" + numberOfPages +
-                ", author=" + author +
                 '}';
     }
 }

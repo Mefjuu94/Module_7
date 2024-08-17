@@ -27,6 +27,14 @@ public class Main {
         listOfBooks.add(new Book("ksiazka 51","fantasy",734,author2));
 
 
+        Book book4 = new Book("amanda","fantasy",223,author);
+        Book book5 = new Book("Gra","comedy",533,author);
+        Book book6 = new Book("Wojna stulecia","drama",766,author2);
+        Book book7 = new Book("Poparaniec 3","horror",545,author1);
+        Book book8 = new Book("rozwój osobisty","comedy",422,author1);
+        Book book9 = new Book("niekonczaca sie opowiesc","fantasy",999,author1);
+
+
         LibrayDAO dao = new LibrayDAO();
 
         //*add Author
@@ -49,8 +57,16 @@ public class Main {
 
         //add book to author
         dao.addBookToAuthor("Mati",book1);
+        dao.addBookToAuthor("Mati",book7);
+        dao.addBookToAuthor("Mati",book8);
+        dao.addBookToAuthor("Mati",book9);
         dao.addBookToAuthor("Mati",book2);
+
+        dao.addBookToAuthor("Mati Orzel",book4);
+        dao.addBookToAuthor("Mati Orzel",book5);
+
         dao.addBookToAuthor("Orzel",book3);
+        dao.addBookToAuthor("Orzel",book6);
         //EntityExistsException
         try {
             dao.addBookToAuthor("Mati", book1);
@@ -60,8 +76,25 @@ public class Main {
 
 
         //PathElementException
-        System.out.println("ksiąki autora: " + dao.getBooksOfAuthor("Mati"));
 
-       // dao.deleteAuthor("Mati Orzel");
+        //get books of author"
+        System.out.println(dao.getBooksOfAuthor("Mati"));
+
+        List<Book> allBooks = dao.getAllBooks();
+
+        for (Book allBook : allBooks) {
+            System.out.println(allBook.toString());
+        }
+
+        System.out.println("******************");
+
+        System.out.println(dao.getAllBooksAndAuthors());
+        dao.deleteBook("Poparaniec 3");
+        dao.deleteBook("ksiazka 1");
+        System.out.println(dao.getAllBooksAndAuthors());
+
+        dao.deleteAuthor("Mati");
+        dao.deleteAuthor("Orzel");
+        System.out.println(dao.getAllAuthors());
     }
 }
