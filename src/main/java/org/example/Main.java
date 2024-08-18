@@ -67,12 +67,10 @@ public class Main {
 
         dao.addBookToAuthor("Orzel",book3);
         dao.addBookToAuthor("Orzel",book6);
+
+
         //EntityExistsException
-        try {
-            dao.addBookToAuthor("Mati", book1);
-        }catch (EntityExistsException e){
-            System.out.println("taki rekord już istnieje");
-        }
+        dao.addBookToAuthor("Mati", book1);
 
 
         //PathElementException
@@ -91,10 +89,12 @@ public class Main {
         System.out.println(dao.getAllBooksAndAuthors());
         dao.deleteBook("Poparaniec 3");
         dao.deleteBook("ksiazka 1");
-        System.out.println(dao.getAllBooksAndAuthors());
-
-        dao.deleteAuthor("Mati");
-        dao.deleteAuthor("Orzel");
-        System.out.println(dao.getAllAuthors());
+        dao.deleteBook("    ");
+//        System.out.println(dao.getAllBooksAndAuthors());
+        dao.getAllBooks();
+//
+//        dao.deleteAuthor("Mati");
+//        dao.deleteAuthor("Orzel");
+//        System.out.println(dao.getAllAuthors());
     }
 }
