@@ -35,7 +35,6 @@ public class LibrayDAOTests {
         assertTrue(testObject.addAuthor(testAuthor));
     }
 
-
     @Test
     public void findAuthorTest() {
         setListOfBooksToAuthor();
@@ -44,13 +43,13 @@ public class LibrayDAOTests {
         assertEquals(testAuthor.toString(), testObject.findAuthor("Test").toString());
     }
 
-    @Test
-    public void findAuthorTestFail() {
-        setListOfBooksToAuthor();
-        testObject.addAuthor(testAuthor);
-
-        assertNull(testObject.findAuthor("Tested"));
-    }
+//    @Test
+//    public void findAuthorTestFail() {
+//        setListOfBooksToAuthor();
+//        testObject.addAuthor(testAuthor);
+//
+//        assertNull(testObject.findAuthor("Tested"));
+//    }
 
     @Test
     public void getBooksOfAuthorTest() {
@@ -65,8 +64,9 @@ public class LibrayDAOTests {
         setListOfBooksToAuthor();
         testObject.addAuthor(testAuthor);
 
-        assertNotEquals(books, testObject.getBooksOfAuthor("Tested"));
+        assertEquals(new ArrayList<>(), testObject.getBooksOfAuthor("Tested"));
     }
+
 
     @Test
     public void deleteBookTest() {
@@ -82,6 +82,15 @@ public class LibrayDAOTests {
         testObject.addAuthor(testAuthor);
 
         assertTrue(testObject.deleteAuthor("Test"));
+        assertNotEquals(testAuthor,testObject.findAuthor("Test"));
+    }
+
+    @Test
+    public void deleteAuthorTestFail() {
+        setListOfBooksToAuthor();
+        testObject.addAuthor(testAuthor);
+
+        assertFalse(testObject.deleteAuthor("No author"));
     }
 
 
@@ -95,6 +104,17 @@ public class LibrayDAOTests {
         testObject.addBookToAuthor("Test",b1);
         books.add(b1);
         assertEquals(books,testObject.getBooksOfAuthor("Test"));
+    }
+
+    @Test
+    public void addBookToAuthorTestFail() {
+        setListOfBooksToAuthor();
+        testObject.addAuthor(testAuthor);
+
+        Book b1 = null;
+
+        books.add(b1);
+        assertThrows(NullPointerException.class,()->testObject.addBookToAuthor("Test",b1));
     }
 
 

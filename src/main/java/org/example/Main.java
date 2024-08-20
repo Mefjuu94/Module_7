@@ -96,5 +96,7 @@ public class Main {
 //        dao.deleteAuthor("Mati");
 //        dao.deleteAuthor("Orzel");
 //        System.out.println(dao.getAllAuthors());
+
+        System.out.println(dao.getBooksOfAuthor("ajsn fgajsbngfs"));
     }
 }

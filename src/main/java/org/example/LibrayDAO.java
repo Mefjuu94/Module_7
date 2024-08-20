@@ -40,27 +40,23 @@ public class LibrayDAO {
         }
     }
 
-    public boolean addBookToAuthor(String authorName, Book book) {
-        try {
-            Session session = sessionFactory.openSession();
-            session.beginTransaction();
+    public void addBookToAuthor(String authorName, Book book) {
 
-            CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaQuery<Author> cq = cb.createQuery(Author.class);
-            Root<Author> authorRoot = cq.from(Author.class);
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
 
-            cq.select(authorRoot).where(cb.equal(authorRoot.get("name"), authorName));
-            Author author = session.createQuery(cq).getSingleResult();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Author> cq = cb.createQuery(Author.class);
+        Root<Author> authorRoot = cq.from(Author.class);
 
-            book.setAuthor(author);
-            session.persist(book);
+        cq.select(authorRoot).where(cb.equal(authorRoot.get("name"), authorName));
+        Author author = session.createQuery(cq).getSingleResult();
 
-            session.getTransaction().commit();
-            return true;
-        }catch (EntityExistsException e){
-            System.out.println("same record already exist");
-        }
-        return false;
+        book.setAuthor(author);
+        session.persist(book);
+
+        session.getTransaction().commit();
+        session.close();
     }
 
     public List<Author> getAllAuthors() {
@@ -110,6 +106,7 @@ public class LibrayDAO {
     }
 
     public boolean deleteBook(String title) {
+
         try {
             Session session = sessionFactory.openSession();
             session.beginTransaction();
@@ -123,29 +120,30 @@ public class LibrayDAO {
             session.createMutationQuery(delete).executeUpdate();
             session.getTransaction().commit();
             return true;
-        }catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             System.out.println("record not found!");
         }
         return false;
     }
 
     public boolean deleteAuthor(String authorName) {
-        try {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
+        if (findAuthor(authorName) != null) {
 
-        CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaDelete<Author> delete = cb.createCriteriaDelete(Author.class);
-        Root<Author> authorRoot = delete.from(Author.class);
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
 
-        delete.where(cb.equal(authorRoot.get("name"), authorName));
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaDelete<Author> delete = cb.createCriteriaDelete(Author.class);
+            Root<Author> authorRoot = delete.from(Author.class);
 
-        session.createMutationQuery(delete).executeUpdate();
-        session.getTransaction().commit();
-        return true;
-        }catch (org.hibernate.HibernateException e){
-            System.out.println("??");
+            delete.where(cb.equal(authorRoot.get("name"), authorName));
+
+            session.createMutationQuery(delete).executeUpdate();
+            session.getTransaction().commit();
+            return true;
+        } else {
+            System.out.println("No author with taht name");
+            return false;
         }
-        return false;
     }
 }
